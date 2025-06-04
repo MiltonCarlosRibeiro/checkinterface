@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -21,17 +20,13 @@
     <div><label>📥 Lista 2:</label><input type="file" id="fileInput2" accept=".xlsx,.xls" /></div>
 </section>
 
-<section class="post-upload-section">
-    <button onclick="carregarMarcacoes()">✅ Carregar marcações após importar a planilha</button>
-</section>
-
 <section class="search-section">
     <div class="search-group">
-        <input type="text" id="searchInput1" placeholder="Buscar na Lista 1" />
+        <input type="text" id="searchInput1" />
         <button onclick="proximaOcorrencia(1)">Próximo</button>
     </div>
     <div class="search-group">
-        <input type="text" id="searchInput2" placeholder="Buscar na Lista 2" />
+        <input type="text" id="searchInput2" />
         <button onclick="proximaOcorrencia(2)">Próximo</button>
     </div>
 </section>
@@ -40,14 +35,16 @@
     <label><input type="checkbox" id="pintarLinhaInteira" /> Pintar linha inteira</label>
     <label><input type="checkbox" id="removerPintura" /> Remover pintura</label>
 
-    <button class="btn-green" onclick="pintarSelecionado('green')">🪣 Lista 1 OK</button>
-    <button class="btn-orange" onclick="pintarSelecionado('orange')">🪣 Divergente</button>
-    <button class="btn-blue" onclick="pintarSelecionado('blue')">🪣 Lista 2 OK</button>
+    <button class="btn-green" onclick="pintarSelecionado('green')">🟩 Lista 1 OK</button>
+    <button class="btn-orange" onclick="pintarSelecionado('orange')">🟧 Divergente</button>
+    <button class="btn-blue" onclick="pintarSelecionado('blue')">🟦 Lista 2 OK</button>
 
     <button onclick="salvarExcelLista(1)">💾 Salvar Lista 1</button>
     <button onclick="salvarExcelLista(2)">💾 Salvar Lista 2</button>
     <button onclick="salvarMarcacoes()">📤 Enviar Marcações</button>
+    <button onclick="carregarMarcacoes()">📥 Carregar Marcações</button>
     <button onclick="resetarMarcacoes()">🗑 Resetar</button>
+
     <button onclick="toggleRegua(1)">📏 Régua Lista 1</button>
     <button onclick="toggleRegua(2)">📏 Régua Lista 2</button>
 </section>

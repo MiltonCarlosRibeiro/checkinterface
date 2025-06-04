@@ -1,5 +1,6 @@
-// script.js (auto-aplica marcações sempre que uma lista é importada)
+// script.js (merge final com correções de régua e menor delay de importação)
 
+// Dados principais
 let dataLista1 = [];
 let dataLista2 = [];
 let celulasMarcadas = [];
@@ -9,62 +10,52 @@ let corSelecionado = "";
 let reguaAtiva1 = false;
 let reguaAtiva2 = false;
 
-// Controle de ocorrências para a busca “Próximo”
+// Controle de busca “Próximo”
 const ocorrencias = { 1: [], 2: [] };
 const indiceAtual = { 1: 0, 2: 0 };
 
-/**
- * Retorna cor hex mais leve para um código lógico.
- */
+// Cores suaves
 function getCorHex(cor) {
-  return (
-    cor === "green" ? "#d9ffe6" :
-    cor === "orange" ? "#ffe082" :
-    cor === "blue" ? "#81d4fa" :
-    cor
-  );
+  return cor === "green" ? "#d9ffe6"
+       : cor === "orange" ? "#fff3cd"
+       : cor === "blue" ? "#e0f7fa"
+       : cor;
 }
 
-/**
- * Cria célula <td> editável, com evento de click para seleção/pintura.
- */
-function criarCelulaEditavel(valor, linhaIdx, colunaIdx, tabelaNum) {
+// Célula editável
+function criarCelulaEditavel(valor, linhaIdx, colunaIdx, tabela) {
   const cell = document.createElement("td");
   cell.textContent = valor;
   cell.contentEditable = true;
 
-  cell.dataset.row = linhaIdx;
-  cell.dataset.col = colunaIdx;
-  cell.dataset.tabela = tabelaNum;
-
   cell.addEventListener("input", () => {
-    const dados = tabelaNum === 1 ? dataLista1 : dataLista2;
+    const dados = tabela === 1 ? dataLista1 : dataLista2;
     dados[linhaIdx][colunaIdx] = cell.textContent;
   });
 
-  cell.addEventListener("click", () =>
-    selecionarCelula(cell, tabelaNum, linhaIdx, colunaIdx)
-  );
+  cell.addEventListener("click", () => selecionarCelula(cell, tabela, linhaIdx, colunaIdx));
+
+  cell.addEventListener("mouseover", () => {
+    if ((tabela === 1 && reguaAtiva1) || (tabela === 2 && reguaAtiva2)) {
+      aplicarReguaLinha(tabela, linhaIdx);
+    }
+  });
 
   return cell;
 }
 
-/**
- * Exibe um array de objetos como tabela HTML editável.
- * Após renderizar, carrega automaticamente as marcações salvas.
- */
+// Renderiza tabela
 function exibirTabela(dados, idTabela, tabelaNum) {
   const container = document.getElementById(idTabela);
   container.innerHTML = "";
-  if (dados.length === 0) return;
+  if (!dados.length) return;
 
   const tabela = document.createElement("table");
-  const thead = tabela.createTHead();
-  const cabecalho = thead.insertRow();
-  Object.keys(dados[0]).forEach((coluna) => {
+  const thead = tabela.createTHead().insertRow();
+  Object.keys(dados[0]).forEach(coluna => {
     const th = document.createElement("th");
     th.textContent = coluna;
-    cabecalho.appendChild(th);
+    thead.appendChild(th);
   });
 
   const tbody = tabela.createTBody();
@@ -77,17 +68,13 @@ function exibirTabela(dados, idTabela, tabelaNum) {
 
   container.appendChild(tabela);
 
-  // Resetar histórico de busca quando nova planilha é carregada
   ocorrencias[tabelaNum] = [];
   indiceAtual[tabelaNum] = 0;
 
-  // Assim que a tabela estiver pronta, aplica imediatamente as marcações salvas
-  carregarMarcacoes();
+  setTimeout(() => carregarMarcacoes(), 100); // pequeno delay
 }
 
-/**
- * Lê arquivo XLSX/XLS e converte em JSON, depois exibe na tabela.
- */
+// Importar arquivo
 function carregarExcel(input, tabelaNum) {
   const file = input.files[0];
   if (!file) return;
@@ -97,6 +84,7 @@ function carregarExcel(input, tabelaNum) {
     const workbook = XLSX.read(e.target.result, { type: "binary" });
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
     const data = XLSX.utils.sheet_to_json(sheet, { defval: "" });
+
     if (tabelaNum === 1) {
       dataLista1 = data;
       exibirTabela(dataLista1, "table1", 1);
@@ -108,65 +96,40 @@ function carregarExcel(input, tabelaNum) {
   reader.readAsBinaryString(file);
 }
 
-/**
- * Ao clicar em uma célula:
- * - Se “Remover pintura” estiver marcado, limpa toda a linha.
- * - Se “Pintar linha inteira” estiver marcado, limpa linha antiga e pinta nova.
- * - Caso contrário, não faz nada.
- */
+// Pintar ou limpar célula
 function selecionarCelula(cell, tabela, linha, coluna) {
+  const pintar = document.getElementById("pintarLinhaInteira").checked;
   const remover = document.getElementById("removerPintura").checked;
-  const pintarLinhaInteira = document.getElementById("pintarLinhaInteira").checked;
 
-  // 1) Se remover pintura, limpa toda a linha
+  const tabelaEl = document.getElementById(`table${tabela}`).querySelector("table");
+  const row = tabelaEl?.rows[linha + 1];
+  if (!row) return;
+
   if (remover) {
-    const tabelaEl = document.getElementById(`table${tabela}`).querySelector("table");
-    const row = tabelaEl.rows[linha + 1];
-    celulasMarcadas = celulasMarcadas.filter(
-      (m) => !(m.tabela === tabela && m.linha === linha)
-    );
-    Array.from(row.cells).forEach((c) => (c.style.backgroundColor = ""));
+    celulasMarcadas = celulasMarcadas.filter(m => !(m.tabela === tabela && m.linha === linha));
+    Array.from(row.cells).forEach(c => c.style.backgroundColor = "");
     return;
   }
 
-  // 2) Se pintar linha inteira
-  if (pintarLinhaInteira) {
-    const tabelaEl = document.getElementById(`table${tabela}`).querySelector("table");
-    const row = tabelaEl.rows[linha + 1];
-    celulasMarcadas = celulasMarcadas.filter(
-      (m) => !(m.tabela === tabela && m.linha === linha)
-    );
-    Array.from(row.cells).forEach((c) => (c.style.backgroundColor = ""));
+  if (pintar) {
+    celulasMarcadas = celulasMarcadas.filter(m => !(m.tabela === tabela && m.linha === linha));
     const hex = getCorHex(corSelecionado);
     Array.from(row.cells).forEach((c, colIdx) => {
       c.style.backgroundColor = hex;
       celulasMarcadas.push({ tabela, linha, coluna: colIdx, cor: hex });
     });
   }
-  // 3) Caso contrário, não faz nada
-  else {
-    return;
-  }
-
-  // Aplica régua se estiver ativa
-  if ((tabela === 1 && reguaAtiva1) || (tabela === 2 && reguaAtiva2)) {
-    aplicarReguaLinha(tabela, linha);
-  }
 }
 
-/**
- * Define a cor escolhida pelos botões de pintura.
- */
+// Pintura
 function pintarSelecionado(cor) {
   corSelecionado = cor;
 }
 
-/**
- * Exporta a tabela como arquivo XLSX para download.
- */
+// Exportar Excel
 function salvarExcelLista(n) {
   const dados = n === 1 ? dataLista1 : dataLista2;
-  if (dados.length === 0) {
+  if (!dados.length) {
     Swal.fire("Aviso", `Carregue a Lista ${n} antes de salvar.`, "info");
     return;
   }
@@ -176,36 +139,26 @@ function salvarExcelLista(n) {
   XLSX.writeFile(wb, `lista_${n}_atualizada.xlsx`);
 }
 
-/**
- * Envia todas as celulasMarcadas ao backend (POST /api/checagem/marcar).
- */
+// Salvar marcações
 function salvarMarcacoes() {
   fetch("/api/checagem/marcar", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(celulasMarcadas),
-  })
-    .then(() => Swal.fire("Sucesso", "Marcações salvas com sucesso!", "success"))
-    .catch(() => Swal.fire("Erro", "Erro ao salvar marcações.", "error"));
+  }).then(() => Swal.fire("Salvo", "Marcações armazenadas.", "success"));
 }
 
-/**
- * Carrega marcações do backend (GET /api/checagem/marcacoes) e aplica.
- */
+// Carregar marcações
 function carregarMarcacoes() {
   fetch("/api/checagem/marcacoes")
     .then((res) => res.json())
-    .then((marcacoes) => {
-      celulasMarcadas = marcacoes;
+    .then((dados) => {
+      celulasMarcadas = dados;
       aplicarMarcacoes();
-      Swal.fire("OK", "Marcações aplicadas com sucesso!", "success");
-    })
-    .catch(() => Swal.fire("Erro", "Falha ao carregar marcações.", "error"));
+    });
 }
 
-/**
- * Aplica as cores de todas as marcações no DOM.
- */
+// Aplicar cores
 function aplicarMarcacoes() {
   celulasMarcadas.forEach(({ tabela, linha, coluna, cor }) => {
     const tabelaEl = document.getElementById(`table${tabela}`).querySelector("table");
@@ -215,16 +168,12 @@ function aplicarMarcacoes() {
   });
 }
 
-/**
- * Deleta todas as marcações salvas no backend, limpa visual e reseta array.
- */
+// Resetar
 function resetarMarcacoes() {
   fetch("/api/checagem/resetar", { method: "DELETE" }).then(() => location.reload());
 }
 
-/**
- * Salva estado atual (quantidade de linhas + timestamp) no backend (POST /api/checagem/estado).
- */
+// Estado
 function salvarEstado() {
   estadoChecagem = {
     linhasLista1: dataLista1.length,
@@ -238,96 +187,56 @@ function salvarEstado() {
   });
 }
 
-/**
- * Carrega estado salvo e loga no console (GET /api/checagem/estado).
- */
 function carregarEstado() {
   fetch("/api/checagem/estado")
     .then((res) => res.json())
-    .then((estado) => console.log("Estado recuperado:", estado))
-    .catch((err) => console.error("Erro ao carregar estado:", err));
+    .then((estado) => console.log("Estado recuperado:", estado));
 }
 
-/**
- * Busca “Próximo” considerando prefixos e substrings:
- * ex: “135-003-095” encontra “135-003-095.1” e “135-003-095@”.
- */
+// Busca
 function proximaOcorrencia(n) {
-  const termoRaw = document.getElementById(`searchInput${n}`).value.trim();
-  if (termoRaw === "") {
-    Swal.fire("Aviso", "Digite um termo para pesquisar.", "info");
-    return;
-  }
-  const termo = termoRaw.toLowerCase();
-  const tabelaEl = document.getElementById(`table${n}`).querySelector("table");
-  if (!tabelaEl) return;
+  const termo = document.getElementById(`searchInput${n}`).value.toLowerCase().trim();
+  if (!termo) return;
 
-  // Recompõe ocorrências a cada busca
-  ocorrencias[n] = Array.from(tabelaEl.querySelectorAll("td")).filter((cell) => {
-    const txt = cell.textContent.toLowerCase();
-    return (
-      txt === termo ||
-      txt.startsWith(termo + ".") ||
-      txt.startsWith(termo + "@") ||
-      txt.includes(termo + ".") ||
-      txt.includes(termo + "@") ||
-      txt.includes(termo)
-    );
-  });
+  const tabela = document.getElementById(`table${n}`).querySelector("table");
+  ocorrencias[n] = Array.from(tabela.querySelectorAll("td")).filter((td) =>
+    td.textContent.toLowerCase().includes(termo)
+  );
 
-  if (ocorrencias[n].length === 0) {
-    Swal.fire("Aviso", `Nenhuma ocorrência para "${termoRaw}".`, "info");
+  if (!ocorrencias[n].length) {
+    Swal.fire("Busca", "Nenhuma ocorrência.", "info");
     return;
   }
 
   if (indiceAtual[n] >= ocorrencias[n].length) indiceAtual[n] = 0;
 
-  const cell = ocorrencias[n][indiceAtual[n]];
-  cell.scrollIntoView({ behavior: "smooth", block: "center" });
-  cell.classList.add("highlighted");
-  setTimeout(() => cell.classList.remove("highlighted"), 1500);
-
+  const cel = ocorrencias[n][indiceAtual[n]];
+  cel.scrollIntoView({ behavior: "smooth", block: "center" });
+  cel.classList.add("highlighted");
+  setTimeout(() => cel.classList.remove("highlighted"), 1000);
   indiceAtual[n]++;
 }
 
-/**
- * Destaca somente a linha clicada, removendo destaque anterior.
- */
+// Régua
 function aplicarReguaLinha(tabela, linha) {
   const tabelaEl = document.getElementById(`table${tabela}`).querySelector("table");
-  Array.from(tabelaEl.rows).forEach((r, idx) => {
-    if (idx === linha + 1) r.classList.add("regua");
+  Array.from(tabelaEl.rows).forEach((r, i) => {
+    if (i === linha + 1) r.classList.add("regua");
     else r.classList.remove("regua");
   });
 }
 
-/**
- * Ativa/desativa a régua.
- */
 function toggleRegua(tabela) {
-  const tabelaContainer = document.getElementById(`table${tabela}`).querySelector("table");
-  if (tabela === 1) {
-    reguaAtiva1 = !reguaAtiva1;
-    if (!reguaAtiva1) removerTodasReguas(tabelaContainer);
-  } else {
-    reguaAtiva2 = !reguaAtiva2;
-    if (!reguaAtiva2) removerTodasReguas(tabelaContainer);
-  }
-  const status = tabela === 1 ? reguaAtiva1 : reguaAtiva2;
-  Swal.fire("Régua", `Régua Lista ${tabela} ${status ? "ativada" : "desativada"}`, "info");
+  const tabelaEl = document.getElementById(`table${tabela}`).querySelector("table");
+  const ativa = tabela === 1 ? (reguaAtiva1 = !reguaAtiva1) : (reguaAtiva2 = !reguaAtiva2);
+  if (!ativa) removerTodasReguas(tabelaEl);
 }
 
-/**
- * Remove destaque “regua” de todas as linhas da tabela.
- */
 function removerTodasReguas(tabelaEl) {
   tabelaEl.querySelectorAll("tr").forEach((r) => r.classList.remove("regua"));
 }
 
-// Eventos de upload das planilhas
-document
-  .getElementById("fileInput1")
-  .addEventListener("change", (e) => carregarExcel(e.target, 1));
-document
-  .getElementById("fileInput2")
-  .addEventListener("change", (e) => carregarExcel(e.target, 2));
+// Eventos
+
+document.getElementById("fileInput1").addEventListener("change", (e) => carregarExcel(e.target, 1));
+document.getElementById("fileInput2").addEventListener("change", (e) => carregarExcel(e.target, 2));
