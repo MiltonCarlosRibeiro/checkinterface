@@ -1,4 +1,4 @@
-// script.js (completo, agora com exportação de planilha editada)
+// script.js (auto-aplica marcações sempre que uma lista é importada)
 
 let dataLista1 = [];
 let dataLista2 = [];
@@ -51,6 +51,7 @@ function criarCelulaEditavel(valor, linhaIdx, colunaIdx, tabelaNum) {
 
 /**
  * Exibe um array de objetos como tabela HTML editável.
+ * Após renderizar, carrega automaticamente as marcações salvas.
  */
 function exibirTabela(dados, idTabela, tabelaNum) {
   const container = document.getElementById(idTabela);
@@ -79,6 +80,9 @@ function exibirTabela(dados, idTabela, tabelaNum) {
   // Resetar histórico de busca quando nova planilha é carregada
   ocorrencias[tabelaNum] = [];
   indiceAtual[tabelaNum] = 0;
+
+  // Assim que a tabela estiver pronta, aplica imediatamente as marcações salvas
+  carregarMarcacoes();
 }
 
 /**
@@ -166,7 +170,6 @@ function salvarExcelLista(n) {
     Swal.fire("Aviso", `Carregue a Lista ${n} antes de salvar.`, "info");
     return;
   }
-  // Converte JSON em planilha
   const ws = XLSX.utils.json_to_sheet(dados);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, `Lista${n}`);
