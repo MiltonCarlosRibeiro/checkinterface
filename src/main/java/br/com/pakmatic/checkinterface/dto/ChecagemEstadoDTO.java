@@ -1,50 +1,29 @@
 package br.com.pakmatic.checkinterface.dto;
 
 public class ChecagemEstadoDTO {
-    private String lista;
-    private int linha;
-    private int coluna;
-    private String cor;
-    private String observacao;
+    private int totalLinhasLista1;
+    private int totalLinhasLista2;
 
-    // Getters e setters
-    public String getLista() {
-        return lista;
+    public ChecagemEstadoDTO() {}
+
+    public ChecagemEstadoDTO(int totalLinhasLista1, int totalLinhasLista2) {
+        this.totalLinhasLista1 = totalLinhasLista1;
+        this.totalLinhasLista2 = totalLinhasLista2;
     }
 
-    public void setLista(String lista) {
-        this.lista = lista;
+    public int getTotalLinhasLista1() {
+        return totalLinhasLista1;
     }
 
-    public int getLinha() {
-        return linha;
+    public void setTotalLinhasLista1(int totalLinhasLista1) {
+        this.totalLinhasLista1 = totalLinhasLista1;
     }
 
-    public void setLinha(int linha) {
-        this.linha = linha;
+    public int getTotalLinhasLista2() {
+        return totalLinhasLista2;
     }
 
-    public int getColuna() {
-        return coluna;
-    }
-
-    public void setColuna(int coluna) {
-        this.coluna = coluna;
-    }
-
-    public String getCor() {
-        return cor;
-    }
-
-    public void setCor(String cor) {
-        this.cor = cor;
-    }
-
-    public String getObservacao() {
-        return observacao;
-    }
-
-    public void setObservacao(String observacao) {
-        this.observacao = observacao;
+    public void setTotalLinhasLista2(int totalLinhasLista2) {
+        this.totalLinhasLista2 = totalLinhasLista2;
     }
 }

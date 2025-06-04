@@ -20,11 +20,6 @@
     <div><label>📥 Lista 2:</label><input type="file" id="fileInput2" accept=".xlsx,.xls" /></div>
 </section>
 
-<!-- ✅ Botão posicionado após importação -->
-<section class="post-upload-section">
-    <button onclick="carregarMarcacoes()">✅ Carregar marcações após importar a planilha</button>
-</section>
-
 <section class="search-section">
     <div class="search-group">
         <input type="text" id="searchInput1" />
@@ -46,9 +41,9 @@
 
     <button onclick="salvarExcelLista(1)">💾 Salvar Lista 1</button>
     <button onclick="salvarExcelLista(2)">💾 Salvar Lista 2</button>
-    <button onclick="salvarMarcacoes()">📤 Enviar Marcações</button>
+    <button onclick="enviarMarcacoes()">📤 Enviar Marcações</button>
+    <button onclick="carregarMarcacoes()">📥 Carregar Marcações</button>
     <button onclick="resetarMarcacoes()">🗑 Resetar</button>
-
     <button onclick="toggleRegua(1)">📏 Régua Lista 1</button>
     <button onclick="toggleRegua(2)">📏 Régua Lista 2</button>
 </section>

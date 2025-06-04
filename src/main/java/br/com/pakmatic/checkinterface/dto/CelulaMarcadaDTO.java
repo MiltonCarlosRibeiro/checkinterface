@@ -1,43 +1,29 @@
 package br.com.pakmatic.checkinterface.dto;
 
-/**
- * DTO para representar uma célula marcada pelo usuário com cor e tooltip.
- */
 public class CelulaMarcadaDTO {
-    private String lista;   // "lista1" ou "lista2"
-    private String celula;  // Ex: "B5"
-    private String cor;     // Ex: "green", "orange", "blue"
-    private String tooltip; // Texto de observação
+    private int tabela;
+    private int linha;
+    private int coluna;
+    private String cor;
 
-    public String getLista() {
-        return lista;
-    }
+    public CelulaMarcadaDTO() {}
 
-    public void setLista(String lista) {
-        this.lista = lista;
-    }
-
-    public String getCelula() {
-        return celula;
-    }
-
-    public void setCelula(String celula) {
-        this.celula = celula;
-    }
-
-    public String getCor() {
-        return cor;
-    }
-
-    public void setCor(String cor) {
+    public CelulaMarcadaDTO(int tabela, int linha, int coluna, String cor) {
+        this.tabela = tabela;
+        this.linha = linha;
+        this.coluna = coluna;
         this.cor = cor;
     }
 
-    public String getTooltip() {
-        return tooltip;
-    }
+    public int getTabela() { return tabela; }
+    public void setTabela(int tabela) { this.tabela = tabela; }
 
-    public void setTooltip(String tooltip) {
-        this.tooltip = tooltip;
-    }
+    public int getLinha() { return linha; }
+    public void setLinha(int linha) { this.linha = linha; }
+
+    public int getColuna() { return coluna; }
+    public void setColuna(int coluna) { this.coluna = coluna; }
+
+    public String getCor() { return cor; }
+    public void setCor(String cor) { this.cor = cor; }
 }

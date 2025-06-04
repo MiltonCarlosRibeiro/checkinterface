@@ -1,118 +1,152 @@
-/* style.css */
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 1rem;
-  background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
 }
 
 header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+    display: flex;
+    align-items: center;
+    background-color: #004aad;
+    color: white;
+    padding: 10px 20px;
 }
 
 .logo {
-  height: 50px;
+    height: 50px;
+    margin-right: 20px;
 }
 
-.search-desenhos {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+h1 {
+    font-size: 24px;
+    margin: 0;
 }
 
 .upload-section,
 .search-section,
-.action-section {
-  display: flex;
-  gap: 1rem;
-  margin: 1rem 0;
-  flex-wrap: wrap;
+.action-section,
+.tables-container {
+    padding: 20px;
 }
 
-.search-group input {
-  padding: 0.5rem;
+.upload-section div,
+.search-group {
+    margin-bottom: 10px;
+}
+
+input[type="file"],
+input[type="text"] {
+    padding: 5px;
+    font-size: 14px;
 }
 
 button {
-  padding: 0.5rem 1rem;
-  font-weight: bold;
-  cursor: pointer;
+    padding: 8px 12px;
+    margin: 5px 3px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-.tables-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.divider-line {
-  width: 2px;
-  background-color: #bbdefb;
-}
-
-.excel-table {
-  background-color: white;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  overflow: auto;
-  max-width: 45%;
-  max-height: 500px;
+button:hover {
+    opacity: 0.9;
 }
 
 .btn-green {
-  background-color: #d9ffe6;
+    background-color: #4caf50;
+    color: white;
 }
+
 .btn-orange {
-  background-color: #ffe082;
+    background-color: #ff9800;
+    color: white;
 }
+
 .btn-blue {
-  background-color: #81d4fa;
+    background-color: #2196f3;
+    color: white;
 }
 
-.highlighted {
-  outline: 2px solid red;
+.excel-table {
+    overflow-x: auto;
+    max-width: 100%;
+    border: 1px solid #ccc;
+    background: white;
+    margin-bottom: 20px;
 }
 
-.selected-row {
-  outline: 2px solid #2196f3;
-  background-color: #e3f2fd !important;
+table {
+    border-collapse: collapse;
+    width: 100%;
 }
 
-.selected-cell {
-  outline: 2px solid #ff9800;
-  box-shadow: 0 0 4px orange;
+th,
+td {
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: left;
+    min-width: 100px;
+    user-select: none;
 }
 
-.regua {
-  background-color: #fff9c4 !important;
+th {
+    background-color: #eee;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
-/* Títulos congelados */
-.excel-table table th {
-  font-size: 12px;
-  font-weight: bold;
-  position: sticky;
-  top: 0;
-  background-color: #eeeeee;
-  z-index: 1;
+td:focus {
+    outline: 2px solid #4caf50;
+    background-color: #eaffea;
 }
 
-.link-pastas {
-  display: flex;
-  gap: 1rem;
-  margin-top: 0.5rem;
+.highlight-yellow {
+    background-color: #ffffcc !important;
 }
-.link-pastas button {
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  font-weight: bold;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
+
+.marked-green {
+    background-color: #c8e6c9 !important;
 }
-.link-pastas button:hover {
-  background-color: #e0e0e0;
+
+.marked-orange {
+    background-color: #ffe0b2 !important;
+}
+
+.marked-blue {
+    background-color: #bbdefb !important;
+}
+
+.divider-line {
+    height: 2px;
+    background-color: #ccc;
+    margin: 20px 0;
+}
+
+.search-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-section {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.tables-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+@media (min-width: 768px) {
+    .tables-container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
 }

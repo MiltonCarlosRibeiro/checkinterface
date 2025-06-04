@@ -1,10 +1,11 @@
-const { shell } = require('electron');
+// Este arquivo pode ser usado para integração com Electron se necessário.
+// Atualmente está vazio, mas serve de base para chamadas futuras.
+// Exemplo: chamada para abrir pastas locais via Electron.
 
-// Correto com base no index.html
-document.getElementById('abrirMapoteca').addEventListener('click', () => {
-  shell.openPath('T:\\Mapoteca');
-});
-
-document.getElementById('abrirEngenharia').addEventListener('click', () => {
-  shell.openPath('W:\\Desenhos SW');
-});
+window.api = {
+  abrirPasta: (caminho) => {
+    console.log("Abrir pasta (futuro):", caminho);
+    // Este código pode ser habilitado quando o preload.js estiver configurado no Electron.
+    // window.electronAPI.abrirPasta(caminho);
+  }
+};
