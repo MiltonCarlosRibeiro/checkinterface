@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>🧾 Checagem de Listas</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<header>
+    <img src="assets/logo.png" alt="Logo" class="logo" />
+    <div>
+        <h1>🧾 Ambiente de Checagem</h1>
+    </div>
+</header>
+
+<section class="upload-section">
+    <div><label>📥 Lista 1:</label><input type="file" id="fileInput1" accept=".xlsx,.xls" /></div>
+    <div><label>📥 Lista 2:</label><input type="file" id="fileInput2" accept=".xlsx,.xls" /></div>
+</section>
+
+<!-- ✅ Botão posicionado após importação -->
+<section class="post-upload-section">
+    <button onclick="carregarMarcacoes()">✅ Carregar marcações após importar a planilha</button>
+</section>
+
+<section class="search-section">
+    <div class="search-group">
+        <input type="text" id="searchInput1" />
+        <button onclick="proximaOcorrencia(1)">Próximo</button>
+    </div>
+    <div class="search-group">
+        <input type="text" id="searchInput2" />
+        <button onclick="proximaOcorrencia(2)">Próximo</button>
+    </div>
+</section>
+
+<section class="action-section">
+    <label><input type="checkbox" id="pintarLinhaInteira" /> Pintar linha inteira</label>
+    <label><input type="checkbox" id="removerPintura" /> Remover pintura</label>
+
+    <button class="btn-green" onclick="pintarSelecionado('green')">🪣 Lista 1 OK</button>
+    <button class="btn-orange" onclick="pintarSelecionado('orange')">🪣 Divergente</button>
+    <button class="btn-blue" onclick="pintarSelecionado('blue')">🪣 Lista 2 OK</button>
+
+    <button onclick="salvarExcelLista(1)">💾 Salvar Lista 1</button>
+    <button onclick="salvarExcelLista(2)">💾 Salvar Lista 2</button>
+    <button onclick="salvarMarcacoes()">📤 Enviar Marcações</button>
+    <button onclick="resetarMarcacoes()">🗑 Resetar</button>
+
+    <button onclick="toggleRegua(1)">📏 Régua Lista 1</button>
+    <button onclick="toggleRegua(2)">📏 Régua Lista 2</button>
+</section>
+
+<section class="tables-container">
+    <div id="table1" class="excel-table"></div>
+    <div class="divider-line"></div>
+    <div id="table2" class="excel-table"></div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>

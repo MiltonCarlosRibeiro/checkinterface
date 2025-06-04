@@ -1,0 +1,118 @@
+/* style.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 1rem;
+  background-color: #f5f5f5;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.logo {
+  height: 50px;
+}
+
+.search-desenhos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.upload-section,
+.search-section,
+.action-section {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+.search-group input {
+  padding: 0.5rem;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.tables-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.divider-line {
+  width: 2px;
+  background-color: #bbdefb;
+}
+
+.excel-table {
+  background-color: white;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  overflow: auto;
+  max-width: 45%;
+  max-height: 500px;
+}
+
+.btn-green {
+  background-color: #d9ffe6;
+}
+.btn-orange {
+  background-color: #ffe082;
+}
+.btn-blue {
+  background-color: #81d4fa;
+}
+
+.highlighted {
+  outline: 2px solid red;
+}
+
+.selected-row {
+  outline: 2px solid #2196f3;
+  background-color: #e3f2fd !important;
+}
+
+.selected-cell {
+  outline: 2px solid #ff9800;
+  box-shadow: 0 0 4px orange;
+}
+
+.regua {
+  background-color: #fff9c4 !important;
+}
+
+/* Títulos congelados */
+.excel-table table th {
+  font-size: 12px;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  background-color: #eeeeee;
+  z-index: 1;
+}
+
+.link-pastas {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+.link-pastas button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.link-pastas button:hover {
+  background-color: #e0e0e0;
+}
