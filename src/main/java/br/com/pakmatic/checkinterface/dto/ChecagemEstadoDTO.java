@@ -1,29 +1,44 @@
+// ChecagemEstadoDTO.java
 package br.com.pakmatic.checkinterface.dto;
 
+/**
+ * DTO para salvar e recuperar o estado da checagem.
+ * Pode conter número de linhas de cada lista e timestamp, por exemplo.
+ */
 public class ChecagemEstadoDTO {
-    private int totalLinhasLista1;
-    private int totalLinhasLista2;
+    private int linhasLista1;
+    private int linhasLista2;
+    private String timestamp;
 
     public ChecagemEstadoDTO() {}
 
-    public ChecagemEstadoDTO(int totalLinhasLista1, int totalLinhasLista2) {
-        this.totalLinhasLista1 = totalLinhasLista1;
-        this.totalLinhasLista2 = totalLinhasLista2;
+    public ChecagemEstadoDTO(int linhasLista1, int linhasLista2, String timestamp) {
+        this.linhasLista1 = linhasLista1;
+        this.linhasLista2 = linhasLista2;
+        this.timestamp = timestamp;
     }
 
-    public int getTotalLinhasLista1() {
-        return totalLinhasLista1;
+    public int getLinhasLista1() {
+        return linhasLista1;
     }
 
-    public void setTotalLinhasLista1(int totalLinhasLista1) {
-        this.totalLinhasLista1 = totalLinhasLista1;
+    public void setLinhasLista1(int linhasLista1) {
+        this.linhasLista1 = linhasLista1;
     }
 
-    public int getTotalLinhasLista2() {
-        return totalLinhasLista2;
+    public int getLinhasLista2() {
+        return linhasLista2;
     }
 
-    public void setTotalLinhasLista2(int totalLinhasLista2) {
-        this.totalLinhasLista2 = totalLinhasLista2;
+    public void setLinhasLista2(int linhasLista2) {
+        this.linhasLista2 = linhasLista2;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 }

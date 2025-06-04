@@ -1,152 +1,96 @@
+/* style.css */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 1rem;
+  background-color: #f5f5f5;
 }
 
 header {
-    display: flex;
-    align-items: center;
-    background-color: #004aad;
-    color: white;
-    padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .logo {
-    height: 50px;
-    margin-right: 20px;
-}
-
-h1 {
-    font-size: 24px;
-    margin: 0;
+  height: 50px;
 }
 
 .upload-section,
 .search-section,
 .action-section,
-.tables-container {
-    padding: 20px;
+.post-upload-section {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
 }
 
-.upload-section div,
-.search-group {
-    margin-bottom: 10px;
-}
-
-input[type="file"],
-input[type="text"] {
-    padding: 5px;
-    font-size: 14px;
+.search-group input {
+  padding: 0.5rem;
 }
 
 button {
-    padding: 8px 12px;
-    margin: 5px 3px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:hover {
-    opacity: 0.9;
-}
-
-.btn-green {
-    background-color: #4caf50;
-    color: white;
-}
-
-.btn-orange {
-    background-color: #ff9800;
-    color: white;
-}
-
-.btn-blue {
-    background-color: #2196f3;
-    color: white;
-}
-
-.excel-table {
-    overflow-x: auto;
-    max-width: 100%;
-    border: 1px solid #ccc;
-    background: white;
-    margin-bottom: 20px;
-}
-
-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-th,
-td {
-    border: 1px solid #ccc;
-    padding: 5px;
-    text-align: left;
-    min-width: 100px;
-    user-select: none;
-}
-
-th {
-    background-color: #eee;
-    font-weight: bold;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-}
-
-td:focus {
-    outline: 2px solid #4caf50;
-    background-color: #eaffea;
-}
-
-.highlight-yellow {
-    background-color: #ffffcc !important;
-}
-
-.marked-green {
-    background-color: #c8e6c9 !important;
-}
-
-.marked-orange {
-    background-color: #ffe0b2 !important;
-}
-
-.marked-blue {
-    background-color: #bbdefb !important;
-}
-
-.divider-line {
-    height: 2px;
-    background-color: #ccc;
-    margin: 20px 0;
-}
-
-.search-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.search-section {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .tables-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-@media (min-width: 768px) {
-    .tables-container {
-        flex-direction: row;
-        justify-content: space-between;
-    }
+.divider-line {
+  width: 2px;
+  background-color: #bbdefb;
+}
+
+.excel-table {
+  background-color: white;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  overflow: auto;
+  max-width: 48%;
+  max-height: 500px;
+}
+
+.btn-green {
+  background-color: #d9ffe6;
+}
+.btn-orange {
+  background-color: #ffe082;
+}
+.btn-blue {
+  background-color: #81d4fa;
+}
+
+.highlighted {
+  outline: 2px solid red;
+}
+
+.selected-row {
+  outline: 2px solid #2196f3;
+  background-color: #e3f2fd !important;
+}
+
+.selected-cell {
+  outline: 2px solid #ff9800;
+  box-shadow: 0 0 4px orange;
+}
+
+.regua {
+  background-color: #fff9c4 !important;
+}
+
+/* Títulos congelados */
+.excel-table table th {
+  font-size: 12px;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  background-color: #eeeeee;
+  z-index: 1;
 }

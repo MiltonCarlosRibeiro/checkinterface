@@ -1,5 +1,9 @@
+// CelulaMarcadaDTO.java
 package br.com.pakmatic.checkinterface.dto;
 
+/**
+ * Representa uma célula marcada pelo usuário para persistência.
+ */
 public class CelulaMarcadaDTO {
     private int tabela;
     private int linha;
@@ -15,15 +19,35 @@ public class CelulaMarcadaDTO {
         this.cor = cor;
     }
 
-    public int getTabela() { return tabela; }
-    public void setTabela(int tabela) { this.tabela = tabela; }
+    public int getTabela() {
+        return tabela;
+    }
 
-    public int getLinha() { return linha; }
-    public void setLinha(int linha) { this.linha = linha; }
+    public void setTabela(int tabela) {
+        this.tabela = tabela;
+    }
 
-    public int getColuna() { return coluna; }
-    public void setColuna(int coluna) { this.coluna = coluna; }
+    public int getLinha() {
+        return linha;
+    }
 
-    public String getCor() { return cor; }
-    public void setCor(String cor) { this.cor = cor; }
+    public void setLinha(int linha) {
+        this.linha = linha;
+    }
+
+    public int getColuna() {
+        return coluna;
+    }
+
+    public void setColuna(int coluna) {
+        this.coluna = coluna;
+    }
+
+    public String getCor() {
+        return cor;
+    }
+
+    public void setCor(String cor) {
+        this.cor = cor;
+    }
 }
