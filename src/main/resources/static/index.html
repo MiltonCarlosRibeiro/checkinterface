@@ -35,6 +35,8 @@
 <section class="action-section">
     <label><input type="checkbox" id="pintarLinhaInteira"/> Pintar linha inteira</label>
     <label><input type="checkbox" id="removerPintura"/> Remover pintura</label>
+    <label><input type="checkbox" id="copiarLinhaAoClicar"/> Copiar linha ao clicar</label>
+
 
     <button class="btn-green" onclick="pintarSelecionado('green')">🟩 Lista 1 OK</button>
     <button class="btn-orange" onclick="pintarSelecionado('orange')">🟧 Divergente</button>
@@ -50,7 +52,6 @@
         <button onclick="toggleRegua(1)">📏 Régua Lista 1</button>
         <button onclick="toggleRegua(2)">📏 Régua Lista 2</button>
     </div>
-
 </section>
 
 <section class="tables-container">
@@ -63,13 +64,11 @@
 <section id="busca-itens-container">
     <h2>🔍 Consulta de Lista 1</h2>
 
-    <!-- Upload -->
     <div class="busca-field">
         <label for="excelFile">📥 Upload da Lista 1 (.xlsx):</label>
         <input type="file" id="excelFile" accept=".xlsx, .xls"/>
     </div>
 
-    <!-- ITEM_COMPONENTE: somar unidades -->
     <div class="busca-field">
         <label for="itemBusca">🔧 ITEM_COMPONENTE para somar unidades:</label>
         <input type="text" id="itemBusca" placeholder="Ex: C1-4225"/>
@@ -79,16 +78,13 @@
 
     <hr style="margin: 1rem 0;" />
 
-    <!-- Pesquisa Avançada por linha -->
     <div class="busca-field">
         <label for="linhaBusca">📋 Linha completa (colada do Excel ou digitada):</label>
         <input type="text" id="linhaBusca" placeholder="Ex: X1-0051, 1, Manufatura, 140, C1-4224, 24, un, 0"/>
     </div>
 
-    <!-- Checkboxes de seleção de campos -->
     <fieldset style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.3rem;">
         <legend>🛠 Campos a considerar na busca:</legend>
-
         <label><input type="checkbox" class="campo-busca" value="0"/> CODIGO_MATERIAL</label>
         <label><input type="checkbox" class="campo-busca" value="1"/> NIVEL</label>
         <label><input type="checkbox" class="campo-busca" value="2"/> TIPO ESTRUTURA</label>
@@ -107,25 +103,21 @@
 <section id="busca-itens-container-2">
     <h2>🔍 Consulta de Lista 2</h2>
 
-    <!-- Upload da planilha -->
     <div class="busca-field">
         <label for="excelFile2">📥 Upload da Lista 2 (.xlsx):</label>
         <input type="file" id="excelFile2" accept=".xlsx, .xls"/>
     </div>
 
-    <!-- Busca por Código e/ou Descrição -->
     <div class="busca-field">
         <label for="itemBusca2">🔧 Buscar por CodigoItem, Descrição ou ambos:</label>
         <input type="text" id="itemBusca2" placeholder="Ex: C1-4116 | PARAFUSO CABEÇA CILINDRICA"/>
     </div>
 
-    <!-- Busca por linha completa -->
     <div class="busca-field">
         <label for="linhaBusca2">📋 Linha completa (colada do Excel ou digitada):</label>
         <input type="text" id="linhaBusca2" placeholder="Ex: 4, C1-4116, PARAFUSO..., RSIMIONI, 10, 10"/>
     </div>
 
-    <!-- Checkboxes dos campos -->
     <fieldset style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.3rem;">
         <legend>🛠 Campos a considerar na busca:</legend>
         <label><input type="checkbox" class="campo-busca2" value="0"/> Nível</label>
@@ -137,10 +129,8 @@
     </fieldset>
 
     <button onclick="executarBusca2()">Executar Busca</button>
-
     <div id="resultado-busca2"></div>
 </section>
-
 
 <!-- Scripts -->
 <script src="script.js"></script>

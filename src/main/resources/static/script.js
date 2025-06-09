@@ -1,4 +1,4 @@
-// script.js (merge final com correções de régua e menor delay de importação)
+// script.js (com cópia automática de linha selecionada)
 
 // Dados principais
 let dataLista1 = [];
@@ -10,7 +10,6 @@ let corSelecionado = "";
 let reguaAtiva1 = false;
 let reguaAtiva2 = false;
 
-// Controle de busca “Próximo”
 const ocorrencias = { 1: [], 2: [] };
 const indiceAtual = { 1: 0, 2: 0 };
 
@@ -21,6 +20,54 @@ function getCorHex(cor) {
        : cor === "blue" ? "#e0f7fa"
        : cor;
 }
+
+// Copiar linha selecionada com base nos checkboxes
+let isArrastando = false;
+let celulasSelecionadas = [];
+
+document.addEventListener("mousedown", (e) => {
+  if (e.button !== 0) return; // só botão esquerdo
+  if (!document.getElementById("copiarLinhaAoClicar")?.checked) return;
+
+  // Reset
+  celulasSelecionadas = [];
+  isArrastando = true;
+
+  if (e.target.tagName === "TD") {
+    e.target.classList.add("selected-cell");
+    celulasSelecionadas.push(e.target);
+  }
+});
+
+document.addEventListener("mousemove", (e) => {
+  if (!isArrastando) return;
+  if (e.target.tagName === "TD" && !celulasSelecionadas.includes(e.target)) {
+    e.target.classList.add("selected-cell");
+    celulasSelecionadas.push(e.target);
+  }
+});
+
+document.addEventListener("mouseup", (e) => {
+  if (!isArrastando) return;
+  isArrastando = false;
+
+  const texto = celulasSelecionadas.map(cel => cel.textContent.trim()).join(", ");
+  celulasSelecionadas.forEach(c => c.classList.remove("selected-cell"));
+  celulasSelecionadas = [];
+
+  if (texto.trim()) {
+    navigator.clipboard.writeText(texto).then(() => {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: 'Linha copiada!',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    });
+  }
+});
 
 // Célula editável
 function criarCelulaEditavel(valor, linhaIdx, colunaIdx, tabela) {
@@ -33,7 +80,10 @@ function criarCelulaEditavel(valor, linhaIdx, colunaIdx, tabela) {
     dados[linhaIdx][colunaIdx] = cell.textContent;
   });
 
-  cell.addEventListener("click", () => selecionarCelula(cell, tabela, linhaIdx, colunaIdx));
+  cell.addEventListener("click", () => {
+    selecionarCelula(cell, tabela, linhaIdx, colunaIdx);
+    copiarLinhaSelecionada(linhaIdx, tabela);
+  });
 
   cell.addEventListener("mouseover", () => {
     if ((tabela === 1 && reguaAtiva1) || (tabela === 2 && reguaAtiva2)) {
@@ -67,11 +117,10 @@ function exibirTabela(dados, idTabela, tabelaNum) {
   });
 
   container.appendChild(tabela);
-
   ocorrencias[tabelaNum] = [];
   indiceAtual[tabelaNum] = 0;
 
-  setTimeout(() => carregarMarcacoes(), 100); // pequeno delay
+  setTimeout(() => carregarMarcacoes(), 100);
 }
 
 // Importar arquivo
@@ -121,12 +170,10 @@ function selecionarCelula(cell, tabela, linha, coluna) {
   }
 }
 
-// Pintura
 function pintarSelecionado(cor) {
   corSelecionado = cor;
 }
 
-// Exportar Excel
 function salvarExcelLista(n) {
   const dados = n === 1 ? dataLista1 : dataLista2;
   if (!dados.length) {
@@ -139,7 +186,6 @@ function salvarExcelLista(n) {
   XLSX.writeFile(wb, `lista_${n}_atualizada.xlsx`);
 }
 
-// Salvar marcações
 function salvarMarcacoes() {
   fetch("/api/checagem/marcar", {
     method: "POST",
@@ -148,7 +194,6 @@ function salvarMarcacoes() {
   }).then(() => Swal.fire("Salvo", "Marcações armazenadas.", "success"));
 }
 
-// Carregar marcações
 function carregarMarcacoes() {
   fetch("/api/checagem/marcacoes")
     .then((res) => res.json())
@@ -158,7 +203,6 @@ function carregarMarcacoes() {
     });
 }
 
-// Aplicar cores
 function aplicarMarcacoes() {
   celulasMarcadas.forEach(({ tabela, linha, coluna, cor }) => {
     const tabelaEl = document.getElementById(`table${tabela}`).querySelector("table");
@@ -168,12 +212,10 @@ function aplicarMarcacoes() {
   });
 }
 
-// Resetar
 function resetarMarcacoes() {
   fetch("/api/checagem/resetar", { method: "DELETE" }).then(() => location.reload());
 }
 
-// Estado
 function salvarEstado() {
   estadoChecagem = {
     linhasLista1: dataLista1.length,
@@ -193,7 +235,6 @@ function carregarEstado() {
     .then((estado) => console.log("Estado recuperado:", estado));
 }
 
-// Busca
 function proximaOcorrencia(n) {
   const termo = document.getElementById(`searchInput${n}`).value.toLowerCase().trim();
   if (!termo) return;
@@ -217,7 +258,6 @@ function proximaOcorrencia(n) {
   indiceAtual[n]++;
 }
 
-// Régua
 function aplicarReguaLinha(tabela, linha) {
   const tabelaEl = document.getElementById(`table${tabela}`).querySelector("table");
   Array.from(tabelaEl.rows).forEach((r, i) => {
@@ -236,7 +276,6 @@ function removerTodasReguas(tabelaEl) {
   tabelaEl.querySelectorAll("tr").forEach((r) => r.classList.remove("regua"));
 }
 
-// Eventos
-
+// Eventos principais
 document.getElementById("fileInput1").addEventListener("change", (e) => carregarExcel(e.target, 1));
 document.getElementById("fileInput2").addEventListener("change", (e) => carregarExcel(e.target, 2));

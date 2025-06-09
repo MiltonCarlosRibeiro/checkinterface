@@ -103,3 +103,9 @@ button {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
+
+.selected-cell {
+  outline: 2px solid #ff9800;
+  background-color: #fff8e1;
+}
+
