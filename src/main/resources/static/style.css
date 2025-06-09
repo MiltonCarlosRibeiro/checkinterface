@@ -58,10 +58,10 @@ button {
 }
 
 .btn-green {
-  background-color: #d9ffe6;
+  background-color: #49ab6b;
 }
 .btn-orange {
-  background-color: #ffe082;
+  background-color: #e8b415;
 }
 .btn-blue {
   background-color: #81d4fa;
@@ -93,4 +93,13 @@ button {
   top: 0;
   background-color: #eeeeee;
   z-index: 1;
+}
+
+/* Container centralizado para os botões de régua */
+.regua-buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
