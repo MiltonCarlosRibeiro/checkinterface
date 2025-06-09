@@ -1,39 +1,40 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>🧾 Checagem de Listas</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="style-extensao.css"/>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <header>
-    <img src="assets/logo.png" alt="Logo" class="logo" />
+    <img src="assets/logo.png" alt="Logo" class="logo"/>
     <div>
         <h1>🧾 Ambiente de Checagem</h1>
     </div>
 </header>
 
 <section class="upload-section">
-    <div><label>📥 Lista 1:</label><input type="file" id="fileInput1" accept=".xlsx,.xls" /></div>
-    <div><label>📥 Lista 2:</label><input type="file" id="fileInput2" accept=".xlsx,.xls" /></div>
+    <div><label>📥 Lista 1:</label><input type="file" id="fileInput1" accept=".xlsx,.xls"/></div>
+    <div><label>📥 Lista 2:</label><input type="file" id="fileInput2" accept=".xlsx,.xls"/></div>
 </section>
 
 <section class="search-section">
     <div class="search-group">
-        <input type="text" id="searchInput1" />
+        <input type="text" id="searchInput1"/>
         <button onclick="proximaOcorrencia(1)">Próximo</button>
     </div>
     <div class="search-group">
-        <input type="text" id="searchInput2" />
+        <input type="text" id="searchInput2"/>
         <button onclick="proximaOcorrencia(2)">Próximo</button>
     </div>
 </section>
 
 <section class="action-section">
-    <label><input type="checkbox" id="pintarLinhaInteira" /> Pintar linha inteira</label>
-    <label><input type="checkbox" id="removerPintura" /> Remover pintura</label>
+    <label><input type="checkbox" id="pintarLinhaInteira"/> Pintar linha inteira</label>
+    <label><input type="checkbox" id="removerPintura"/> Remover pintura</label>
 
     <button class="btn-green" onclick="pintarSelecionado('green')">🟩 Lista 1 OK</button>
     <button class="btn-orange" onclick="pintarSelecionado('orange')">🟧 Divergente</button>
@@ -55,6 +56,93 @@
     <div id="table2" class="excel-table"></div>
 </section>
 
+<!-- Card de Consulta Lista 1 -->
+<section id="busca-itens-container">
+    <h2>🔍 Consulta de Lista 1</h2>
+
+    <!-- Upload -->
+    <div class="busca-field">
+        <label for="excelFile">📥 Upload da Lista 1 (.xlsx):</label>
+        <input type="file" id="excelFile" accept=".xlsx, .xls"/>
+    </div>
+
+    <!-- ITEM_COMPONENTE: somar unidades -->
+    <div class="busca-field">
+        <label for="itemBusca">🔧 ITEM_COMPONENTE para somar unidades:</label>
+        <input type="text" id="itemBusca" placeholder="Ex: C1-4225"/>
+        <button onclick="executarBusca()">Executar Busca</button>
+        <div id="resultado-busca"></div>
+    </div>
+
+    <hr style="margin: 1rem 0;" />
+
+    <!-- Pesquisa Avançada por linha -->
+    <div class="busca-field">
+        <label for="linhaBusca">📋 Linha completa (colada do Excel ou digitada):</label>
+        <input type="text" id="linhaBusca" placeholder="Ex: X1-0051, 1, Manufatura, 140, C1-4224, 24, un, 0"/>
+    </div>
+
+    <!-- Checkboxes de seleção de campos -->
+    <fieldset style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.3rem;">
+        <legend>🛠 Campos a considerar na busca:</legend>
+
+        <label><input type="checkbox" class="campo-busca" value="0"/> CODIGO_MATERIAL</label>
+        <label><input type="checkbox" class="campo-busca" value="1"/> NIVEL</label>
+        <label><input type="checkbox" class="campo-busca" value="2"/> TIPO ESTRUTURA</label>
+        <label><input type="checkbox" class="campo-busca" value="3"/> LINHA</label>
+        <label><input type="checkbox" class="campo-busca" value="4"/> ITEM_COMPONENTE</label>
+        <label><input type="checkbox" class="campo-busca" value="5"/> QTDE_MONTAGEM</label>
+        <label><input type="checkbox" class="campo-busca" value="6"/> UNIDADE DE MEDIDA</label>
+        <label><input type="checkbox" class="campo-busca" value="7"/> FATOR_SUCATA</label>
+    </fieldset>
+
+    <button onclick="executarBuscaAvancada()">🔎 Buscar linha com campos selecionados</button>
+    <div id="resultado-busca-avancada"></div>
+</section>
+
+<!-- Card de Consulta Lista 2 -->
+<section id="busca-itens-container-2">
+    <h2>🔍 Consulta de Lista 2</h2>
+
+    <!-- Upload da planilha -->
+    <div class="busca-field">
+        <label for="excelFile2">📥 Upload da Lista 2 (.xlsx):</label>
+        <input type="file" id="excelFile2" accept=".xlsx, .xls"/>
+    </div>
+
+    <!-- Busca por Código e/ou Descrição -->
+    <div class="busca-field">
+        <label for="itemBusca2">🔧 Buscar por CodigoItem, Descrição ou ambos:</label>
+        <input type="text" id="itemBusca2" placeholder="Ex: C1-4116 | PARAFUSO CABEÇA CILINDRICA"/>
+    </div>
+
+    <!-- Busca por linha completa -->
+    <div class="busca-field">
+        <label for="linhaBusca2">📋 Linha completa (colada do Excel ou digitada):</label>
+        <input type="text" id="linhaBusca2" placeholder="Ex: 4, C1-4116, PARAFUSO..., RSIMIONI, 10, 10"/>
+    </div>
+
+    <!-- Checkboxes dos campos -->
+    <fieldset style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.3rem;">
+        <legend>🛠 Campos a considerar na busca:</legend>
+        <label><input type="checkbox" class="campo-busca2" value="0"/> Nível</label>
+        <label><input type="checkbox" class="campo-busca2" value="1"/> CodigoItem</label>
+        <label><input type="checkbox" class="campo-busca2" value="2"/> Descricao</label>
+        <label><input type="checkbox" class="campo-busca2" value="3"/> Texto7</label>
+        <label><input type="checkbox" class="campo-busca2" value="4"/> Qtd</label>
+        <label><input type="checkbox" class="campo-busca2" value="5"/> QtdEx</label>
+    </fieldset>
+
+    <button onclick="executarBusca2()">Executar Busca</button>
+
+    <div id="resultado-busca2"></div>
+</section>
+
+
+<!-- Scripts -->
 <script src="script.js"></script>
+<script src="script-busca-itens.js"></script>
+<script src="script-busca-itens-lista2.js"></script>
+
 </body>
 </html>
