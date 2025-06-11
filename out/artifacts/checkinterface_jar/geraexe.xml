@@ -1,0 +1,19 @@
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>checkinterface.jar</jar>
+  <outfile>checkinterface.exe</outfile>
+  <errTitle>Erro na execução</errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>https://adoptium.net/en-GB/temurin/releases/</downloadUrl>
+  <supportUrl></supportUrl>
+  <customProcName>false</customProcName>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <icon>ico (2).ico</icon>
+  <jre>
+    <minVersion>17</minVersion>
+  </jre>
+</launch4jConfig>
