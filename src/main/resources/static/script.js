@@ -1,4 +1,4 @@
-// script.js (com cópia automática de linha selecionada)
+// script.js (com suporte à indentação baseada em "Nivel")
 
 // Dados principais
 let dataLista1 = [];
@@ -26,10 +26,9 @@ let isArrastando = false;
 let celulasSelecionadas = [];
 
 document.addEventListener("mousedown", (e) => {
-  if (e.button !== 0) return; // só botão esquerdo
+  if (e.button !== 0) return;
   if (!document.getElementById("copiarLinhaAoClicar")?.checked) return;
 
-  // Reset
   celulasSelecionadas = [];
   isArrastando = true;
 
@@ -47,7 +46,7 @@ document.addEventListener("mousemove", (e) => {
   }
 });
 
-document.addEventListener("mouseup", (e) => {
+document.addEventListener("mouseup", () => {
   if (!isArrastando) return;
   isArrastando = false;
 
@@ -69,14 +68,24 @@ document.addEventListener("mouseup", (e) => {
   }
 });
 
-// Célula editável
+// Célula editável com indentação visual baseada na coluna "Nivel"
 function criarCelulaEditavel(valor, linhaIdx, colunaIdx, tabela) {
   const cell = document.createElement("td");
+  const dados = tabela === 1 ? dataLista1 : dataLista2;
+  const nomeColuna = Object.keys(dados[0])[colunaIdx];
+
+  // Indentação baseada na coluna "Nivel" ou "Nível"
+  if (nomeColuna.toLowerCase().includes("descricao")) {
+    const nivel = parseInt(dados[linhaIdx]["Nivel"] || dados[linhaIdx]["Nível"] || "0");
+    const padding = isNaN(nivel) ? 0 : nivel * 10;
+    cell.style.paddingLeft = `${padding}px`;
+  }
+
   cell.textContent = valor;
   cell.contentEditable = true;
+  cell.style.whiteSpace = "pre";
 
   cell.addEventListener("input", () => {
-    const dados = tabela === 1 ? dataLista1 : dataLista2;
     dados[linhaIdx][colunaIdx] = cell.textContent;
   });
 
