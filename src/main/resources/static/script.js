@@ -1,4 +1,4 @@
-// script.js (com suporte à indentação baseada em "Nivel")
+// script.js (com suporte à indentação baseada em "Nivel" para a coluna "Descricao")
 
 // Dados principais
 let dataLista1 = [];
@@ -68,17 +68,31 @@ document.addEventListener("mouseup", () => {
   }
 });
 
+// UTILITÁRIO: Normaliza chaves removendo acento, maiúsculas, espaços
+function normalizeKey(str) {
+  return String(str || "")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // remove acento
+    .replace(/\s/g, '') // remove espaço
+    .toLowerCase();
+}
+
 // Célula editável com indentação visual baseada na coluna "Nivel"
 function criarCelulaEditavel(valor, linhaIdx, colunaIdx, tabela) {
   const cell = document.createElement("td");
   const dados = tabela === 1 ? dataLista1 : dataLista2;
-  const nomeColuna = Object.keys(dados[0])[colunaIdx];
+  const colunas = Object.keys(dados[linhaIdx]);
 
-  // Indentação baseada na coluna "Nivel" ou "Nível"
-  if (nomeColuna.toLowerCase().includes("descricao")) {
-    const nivel = parseInt(dados[linhaIdx]["Nivel"] || dados[linhaIdx]["Nível"] || "0");
-    const padding = isNaN(nivel) ? 0 : nivel * 10;
-    cell.style.paddingLeft = `${padding}px`;
+  // Encontra a coluna Nivel (qualquer variação)
+  const chaveNivel = colunas.find(k => normalizeKey(k) === "nivel");
+  // Encontra a coluna Descricao (qualquer variação)
+  const chaveDescricao = colunas.find(k => normalizeKey(k).startsWith("descricao"));
+
+  // Só indentar a célula que está na coluna Descricao
+  if (colunas[colunaIdx] === chaveDescricao && chaveNivel) {
+    // Valor do nível, trata qualquer lixo que vier do Excel
+    let nivelRaw = dados[linhaIdx][chaveNivel];
+    let nivel = parseInt(String(nivelRaw).replace(/[^\d]/g, ''), 10) || 0;
+    cell.style.paddingLeft = `${nivel * 20}px`;
   }
 
   cell.textContent = valor;
@@ -86,12 +100,11 @@ function criarCelulaEditavel(valor, linhaIdx, colunaIdx, tabela) {
   cell.style.whiteSpace = "pre";
 
   cell.addEventListener("input", () => {
-    dados[linhaIdx][colunaIdx] = cell.textContent;
+    dados[linhaIdx][colunas[colunaIdx]] = cell.textContent;
   });
 
   cell.addEventListener("click", () => {
     selecionarCelula(cell, tabela, linhaIdx, colunaIdx);
-    copiarLinhaSelecionada(linhaIdx, tabela);
   });
 
   cell.addEventListener("mouseover", () => {
@@ -141,7 +154,17 @@ function carregarExcel(input, tabelaNum) {
   reader.onload = (e) => {
     const workbook = XLSX.read(e.target.result, { type: "binary" });
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    const data = XLSX.utils.sheet_to_json(sheet, { defval: "" });
+    let data = XLSX.utils.sheet_to_json(sheet, { defval: "" });
+
+    // NORMALIZA AS CHAVES de cada linha
+    data = data.map(row => {
+      const newRow = {};
+      for (const key in row) {
+        // Remove acentos, espaços e mantém maiúsculas/minúsculas originais no Excel, mas as chaves normalizadas no código
+        newRow[key.trim()] = row[key];
+      }
+      return newRow;
+    });
 
     if (tabelaNum === 1) {
       dataLista1 = data;
@@ -154,7 +177,8 @@ function carregarExcel(input, tabelaNum) {
   reader.readAsBinaryString(file);
 }
 
-// Pintar ou limpar célula
+// --- RESTANTE IGUAL SEU ORIGINAL (pintura, marcações, salvar etc.) ---
+
 function selecionarCelula(cell, tabela, linha, coluna) {
   const pintar = document.getElementById("pintarLinhaInteira").checked;
   const remover = document.getElementById("removerPintura").checked;

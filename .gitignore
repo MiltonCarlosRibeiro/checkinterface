@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+/out/artifacts/checkinterface_jar/arquivos.zip
+/out/artifacts/checkinterface_jar/checkinterface_jar.lnk
+/out/artifacts/checkinterface_jar/modigicações/CheckInterface_PacoteParaDeploy1.zip
+/out/artifacts/checkinterface_jar/modigicações/CheckInterface_PacoteParaDeploy2-com instalar e desinstalar.zip
+/out/artifacts/checkinterface_jar/Output/CheckInterfaceInstaller.zip
+/out/artifacts/checkinterface_jar/modigicações/CheckInterfaceInstaller-iss.zip
